@@ -1,7 +1,7 @@
 # Interview Notes
 Ответы на частые вопросы на собеседованиях по Python, базам данных, очередям и сопутствующим бекенду темам.
 
-Доступно по ссылке https://inotes.alex.md  
+Доступно по ссылке [notes.alex.md](https://notes.alex.md)  
 
 ## Похожие проекты
-https://backendinterview.ru
+[backendinterview.ru](https://backendinterview.ru)
