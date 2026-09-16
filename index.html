@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Notes</title>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/marked.js"></script>
+
+    <!-- Syntax highlight -->
+    <script src="./lib/highlight.min.js"></script>
+    <script src="./lib/python.min.js"></script>
+    <script src="./lib/go.min.js"></script>
+    <link rel="stylesheet" href="./lib/github-dark.min.css">
+
+    <link rel="icon" type="image/png" sizes="128x128" href="./lib/favicon-128.png">
+    <link rel="stylesheet" href="./lib/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./lib/app.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <h1><i class="fas fa-book-open"></i> Interview Notes</h1>
+            </div>
+
+            <div class="header-center">
+                <div class="folder-header" v-if="selectedDir != null">
+                    <h2>
+                        <i class="fa-regular fa-folder-open"></i> {{ linksDataByDir(selectedDir).value.header }}
+                        <button class="close-button" @click="chooseDir(null)" title="Закрыть папку">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </h2>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <a class="github-button" href="https://github.com/qvp/aiochorm"
+                   data-icon="octicon-star" data-size="large"
+                   data-color-scheme="dark" data-show-count="true"
+                   aria-label="Star qvp/aiochorm on GitHub">Star</a>
+            </div>
+        </header>
+
+        <div class="sub-header" v-if="selectedDir == null">
+            Ответы на частые вопросы на собеседованиях по Python, базам данных,
+            <br>
+            очередям и сопутствующим бекенду темам
+        </div>
+
+        <main>
+            <!-- Если папка не выбрана отображаем список папок -->
+            <div class="masonry-container" v-if="selectedDir == null">
+                <div class="category-card category-card-selectable" v-for="(category, index) in linksData" :key="index" @click="chooseDir(index)" title="Открыть папку">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="category-title-wrapper">
+                            <h2 class="category-title">{{ category.header }}</h2>
+                            <span class="category-count">{{ category.links.length }} файлов</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Иначе отображаем список файлов в папке -->
+            <div class="masonry-container" v-if="selectedDir != null">
+                <div class="category-card category-card-mini" v-for="category in linksDataByDir(selectedDir).value.links" :key="index">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="category-title-wrapper">
+                            <h2 class="category-title">{{ category.title }}</h2>
+                            <span class="category-count">{{ category.child.length }} заметок</span>
+                            <span class="link-file" @click="openModal(category, category)">&nbsp;{{ category.file }}</span>
+                        </div>
+                    </div>
+
+                    <ul class="links-list" v-if="category.child && category.child.length">
+                        <link-item
+                                v-for="(link, index) in category.child"
+                                :key="'link-' + index"
+                                :link="link"
+                                :category="category"
+                                :depth="0"
+                                @open-modal="openModal"
+                        />
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <!-- Если папка не выбрана отображаем футер -->
+        <div class="stats-bar" v-if="selectedDir == null">
+            <div class="stat-item">
+                <div class="stat-value">{{ totalCategories }}</div>
+                <div class="stat-label">Папок</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ totalLinks }}</div>
+                <div class="stat-label">Всего заметок</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ totalFiles }}</div>
+                <div class="stat-label">Файлов</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" v-if="showModal" @click.self="closeModal">
+        <div class="modal-content">
+            <!--                <button class="close-button" @click="closeModal">-->
+            <!--                    <i class="fas fa-times"></i>-->
+            <!--                </button>-->
+
+            <div class="modal-body">
+                <div v-if="loading" class="loading">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Загрузка содержимого...</p>
+                </div>
+                <div v-else-if="markdownContent" class="markdown-content" v-html="renderedMarkdown"
+                     ref="modalContentRef"></div>
+                <div v-else class="error-message">
+                    <i class="fas fa-exclamation-circle error-icon"></i>
+                    <p>Не удалось загрузить содержимое файла</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./lib/links.js"></script>
+<script src="./lib/app.js"></script>
+</body>
+</html>
