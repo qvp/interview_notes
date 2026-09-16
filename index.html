@@ -57,7 +57,7 @@
                 <div class="category-card category-card-selectable" v-for="(category, index) in linksData" :key="index" @click="chooseDir(index)" title="Открыть папку">
                     <div class="category-header">
                         <div class="category-icon">
-                            <i class="fas fa-folder"></i>
+                            <i :class="category.icon"></i>
                         </div>
                         <div class="category-title-wrapper">
                             <h2 class="category-title">{{ category.header }}</h2>
