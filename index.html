@@ -23,7 +23,10 @@
     <div class="container">
         <header class="header">
             <div class="header-left">
-                <h1><i class="fas fa-book-open"></i> Interview Notes</h1>
+                <div class="category-icon">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <h1>Notes</h1>
             </div>
 
             <div class="header-center">
@@ -46,30 +49,48 @@
         </header>
 
         <div class="sub-header" v-if="selectedDir == null">
-            Ответы на частые вопросы на собеседованиях по Python, базам данных,
+            Ответы на частые вопросы с собеседований по Python, базам данных, очередям
             <br>
-            очередям и сопутствующим бекенду темам
+            и другим темам, связанным с веб-разработкой.
+        </div>
+
+        <!-- Если папка не выбрана отображаем общую статистику -->
+        <div class="stats-bar" v-if="selectedDir == null">
+            <div class="stat-item">
+                <div class="stat-value">{{ totalCategories }}</div>
+                <div class="stat-label">Папок</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ totalLinks }}</div>
+                <div class="stat-label">Всего заметок</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ totalFiles }}</div>
+                <div class="stat-label">Файлов</div>
+            </div>
         </div>
 
         <main>
             <!-- Если папка не выбрана отображаем список папок -->
-            <div class="masonry-container" v-if="selectedDir == null">
-                <div class="category-card category-card-selectable" v-for="(category, index) in linksData" :key="index" @click="chooseDir(index)" title="Открыть папку">
+            <div class="grid-container" v-if="selectedDir == null">
+                <div class="category-card category-card-selectable" v-for="(category, index) in sortedLinksData" :key="index"
+                     @click="chooseDir(category.dir)" title="Открыть папку">
                     <div class="category-header">
                         <div class="category-icon">
                             <i :class="category.icon"></i>
                         </div>
                         <div class="category-title-wrapper">
                             <h2 class="category-title">{{ category.header }}</h2>
-                            <span class="category-count">{{ category.links.length }} файлов</span>
+                            <span class="category-count">{{ totalLinksByCategory[category.dir] }} заметок, {{ category.links.length }} файлов</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Иначе отображаем список файлов в папке -->
+            <!-- Если папка выбрана отображаем список файлов в папке -->
             <div class="masonry-container" v-if="selectedDir != null">
-                <div class="category-card category-card-mini" v-for="category in linksDataByDir(selectedDir).value.links" :key="index">
+                <div class="category-card category-card-mini"
+                     v-for="category in linksDataByDir(selectedDir).value.links" :key="index">
                     <div class="category-header">
                         <div class="category-icon">
                             <i class="fas fa-file-alt"></i>
@@ -77,7 +98,8 @@
                         <div class="category-title-wrapper">
                             <h2 class="category-title">{{ category.title }}</h2>
                             <span class="category-count">{{ category.child.length }} заметок</span>
-                            <span class="link-file" @click="openModal(category, category)">&nbsp;{{ category.file }}</span>
+                            <span class="link-file"
+                                  @click="openModal(category, category)">{{ category.file }}</span>
                         </div>
                     </div>
 
@@ -94,29 +116,13 @@
                 </div>
             </div>
         </main>
-
-        <!-- Если папка не выбрана отображаем футер -->
-        <div class="stats-bar" v-if="selectedDir == null">
-            <div class="stat-item">
-                <div class="stat-value">{{ totalCategories }}</div>
-                <div class="stat-label">Папок</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">{{ totalLinks }}</div>
-                <div class="stat-label">Всего заметок</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">{{ totalFiles }}</div>
-                <div class="stat-label">Файлов</div>
-            </div>
-        </div>
     </div>
 
     <div class="modal-overlay" v-if="showModal" @click.self="closeModal">
         <div class="modal-content">
-            <!--                <button class="close-button" @click="closeModal">-->
-            <!--                    <i class="fas fa-times"></i>-->
-            <!--                </button>-->
+            <button class="close-button" @click="closeModal" title="Закрыть заметку">
+                <i class="fas fa-times"></i>
+            </button>
 
             <div class="modal-body">
                 <div v-if="loading" class="loading">
@@ -132,6 +138,8 @@
             </div>
         </div>
     </div>
+
+    <footer></footer>
 </div>
 
 <script src="./lib/links.js"></script>

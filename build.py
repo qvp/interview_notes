@@ -12,6 +12,16 @@ from pathlib import Path
 
 
 NOTES_DIR = "notes"
+ICONS = {
+    "Python": "fa-brands fa-python",
+    "Code_Quality": "fa-solid fa-code",
+    "Apache_Kafka": "fa-solid fa-lines-leaning",
+    "PostgreSQL": "fa-brands fa-postgresql",
+    "Architecture": "fa-solid fa-building-columns",
+    "Redis": "fa-solid fa-database",
+    "Golang": "fa-brands fa-golang",
+    "AI": "fa-solid fa-hexagon-nodes",
+}
 
 
 def parse_markdown_headers(file_path, file_name):
@@ -111,24 +121,6 @@ def build_hierarchy(headers, file_name):
     return root
 
 
-def format_header_name(name):
-    """Форматирует имя заголовка папки: заменяет подчеркивания на пробелы и делает первую букву заглавной."""
-    if not name:
-        return ""
-
-    # Заменяем подчеркивания на пробелы
-    formatted = name.replace('_', ' ')
-
-    # Разделяем на слова и делаем каждое слово с заглавной буквы
-    words = formatted.split()
-    capitalized_words = []
-    for word in words:
-        if word:
-            capitalized_words.append(word[0].upper() + word[1:].lower())
-
-    return ' '.join(capitalized_words)
-
-
 def generate_links_js(show_folders: list[str]):
     """Генерирует JavaScript файл со структурой ссылок."""
     output_file = "lib/links.js"
@@ -140,8 +132,8 @@ def generate_links_js(show_folders: list[str]):
     result = []
 
     # Проходим по всем подпапкам в notes
-    for folder in show_folders:
-        folder_name, folder_icon = folder
+    for folder_name in show_folders:
+        folder_icon = ICONS.get(folder_name, "fa-regular fa-folder")
         folder_path = os.path.join(NOTES_DIR, folder_name)
 
         if os.path.isdir(folder_path):
@@ -150,7 +142,7 @@ def generate_links_js(show_folders: list[str]):
             folder_data = {
                 "dir": folder_name,  # оригинальное имя папки
                 "icon": folder_icon,  # font awesome icon
-                "header": format_header_name(folder_name),  # без #
+                "header": folder_name.replace('_', ' '),
                 "links": []
             }
 
@@ -212,10 +204,6 @@ def generate_links_js(show_folders: list[str]):
 
 
 if __name__ == "__main__":
-    some_folders = [
-        ("python", "fa-brands fa-python"),       ("code_quality", "fa-solid fa-code"), ("queue", "fa-solid fa-lines-leaning"),
-        ("postgres", "fa-brands fa-postgresql"), ("common", "fa-regular fa-folder"),   ("architecture", "fa-solid fa-building-columns"),
-        ("database", "fa-solid fa-database"),    ("golang", "fa-brands fa-golang"),    ("ai", "fa-solid fa-hexagon-nodes"),
-    ]
+    folders = [f for f in sorted(os.listdir(NOTES_DIR)) if f not in ("images",)]
 
-    generate_links_js(some_folders)
+    generate_links_js(folders)
