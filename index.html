@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interview Notes</title>
+    <title>Notes</title>
     <script src="./lib/vue.js"></script>
     <script src="./lib/marked.js"></script>
 
@@ -13,7 +13,7 @@
     <script src="./lib/go.min.js"></script>
     <link rel="stylesheet" href="./lib/github-dark.min.css">
 
-    <link rel="icon" type="image/png" sizes="128x128" href="./lib/favicon-128.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="./lib/favicon-64.png">
     <link rel="stylesheet" href="./lib/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="./lib/app.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -156,7 +156,7 @@
             <div class="contributer" v-for="contributor in contributors" :key="contributor.login">
                 <img :src="contributor.avatar_url">
                 <div class="contributor-titles">
-                    <a :href="'https://github.com/' + contributor.login">{{ contributor.name }}</a>
+                    <a :href="'https://github.com/' + contributor.login" target="_blank">{{ contributor.name }}</a>
                     <span v-if="contributor.name != contributor.login">{{ contributor.login }}</span>
                 </div>
             </div>
