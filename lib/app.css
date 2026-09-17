@@ -757,6 +757,87 @@ footer {
 /* ===== SCROLLBAR ====*/
 
 
+/* ===== Contributors ===== */
+.contributers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 600px;
+    margin: 0 auto;
+}
+
+.contributer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #1e1e24;
+    border: 1px solid #2c2c34;
+    border-radius: 12px;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.contributer:hover {
+    transform: translateY(-2px);
+    border-color: #3a3a44;
+    background: #24242c;
+}
+
+.contributer img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #2c2c34;
+}
+
+.contributor-titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+}
+
+.contributor-titles a {
+    font-size: 15px;
+    font-weight: 600;
+    color: #eaeaf0;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s ease;
+}
+
+.contributor-titles a:hover {
+    color: #7c9cff;
+}
+
+.contributor-titles span {
+    font-size: 13px;
+    color: #8a8a96;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .contributers {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .contributers {
+        grid-template-columns: 1fr;
+    }
+}
+/* ===== Contributors ===== */
+
+
 @media (max-width: 1200px) {
     .masonry-container {
         column-count: 2;
