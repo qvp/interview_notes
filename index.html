@@ -49,9 +49,12 @@
         </header>
 
         <div class="sub-header" v-if="selectedDir == null">
-            Ответы на частые вопросы с собеседований по Python, базам данных, очередям
-            <br>
-            и другим темам, связанным с веб-разработкой.
+            <h1>
+                Ответы на частые вопросы с собеседований по Python, базам данных,
+                <br>
+                очередям и другим темам, связанным с веб-разработкой.
+            </h1>
+            <p>Структурированная база знаний для подготовки к техническим интервью</p>
         </div>
 
         <!-- Если папка не выбрана отображаем общую статистику -->
@@ -73,7 +76,8 @@
         <main>
             <!-- Если папка не выбрана отображаем список папок -->
             <div class="grid-container" v-if="selectedDir == null">
-                <div class="category-card category-card-selectable" v-for="(category, index) in sortedLinksData" :key="index"
+                <div class="category-card category-card-selectable" v-for="(category, index) in sortedLinksData"
+                     :key="index"
                      @click="chooseDir(category.dir)" title="Открыть папку">
                     <div class="category-header">
                         <div class="category-icon">

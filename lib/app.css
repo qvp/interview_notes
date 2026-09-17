@@ -103,25 +103,24 @@ body {
     position: relative;
     text-align: center;
     margin-bottom: 30px;
-    font-size: 24px;
+}
+
+.sub-header h1 {
+    font-size: 28px;
     font-weight: 700;
-    line-height: 1.45;
-    letter-spacing: -0.3px;
-    background: linear-gradient(135deg, #f5f3ff 0%, #e0e7ff 50%, #dbeafe 100%);
-    filter: drop-shadow(0 4px 20px rgba(139, 92, 246, 0.5));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+
+    line-height: 1.35;
+    letter-spacing: -0.03em;
+    background: linear-gradient(180deg, #fff 0%, #c0c0d0 100%);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.sub-header::after {
-    content: '';
-    height: 2px;
-    background: var(--gradient-primary);
-    border-radius: 2px;
-    display: block;
-    width: 360px;
-    margin: 10px auto 0 auto;
+.sub-header p {
+    color: var(--text-muted);
 }
 /*============== / Header ============*/
 
@@ -157,6 +156,11 @@ footer {
 
 .grid-container .category-card {
     margin-bottom: 0;
+    padding: 10px 10px 0 15px;
+}
+
+.grid-container .category-header {
+    border: none;
 }
 
 .category-card-selectable {
@@ -680,7 +684,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
+    width: 420px;
     margin: 0 auto 30px auto;
     padding: var(--spacing-md);
 }
