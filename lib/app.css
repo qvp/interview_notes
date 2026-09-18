@@ -15,7 +15,7 @@
     --accent-color: #8b5cf6;
     --accent-hover: #7c3aed;
     --accent-light: rgba(139, 92, 246, 0.1);
-    --modal-bg: rgba(10, 14, 23, 0.92);
+    --modal-bg: rgba(10, 14, 23, 1);
     --success-color: #10b981;
     --spacing-xs: 6px;
     --spacing-sm: 12px;
@@ -76,6 +76,11 @@ body {
     gap: 12px;
 }
 
+.header-left .category-icon {
+    background-image: linear-gradient(180deg, #212830, #1a2026 90%);
+    box-shadow: none;
+}
+
 .header-center {
     flex: 1 1 auto;
     text-align: center;
@@ -90,10 +95,8 @@ body {
 .header h1 {
     font-size: 24px;
     font-weight: 800;
-    background: var(--gradient-primary);
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
     margin: 0;
     letter-spacing: -0.5px;
     white-space: nowrap;
@@ -171,20 +174,19 @@ footer {
     padding: 10px;
 }
 
-.category-card-selectable::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-    opacity: 0;
-    transition: var(--transition);
+.category-card-mini, .category-card-mini .link-title-text {
+    color: var(--text-secondary);
+}
+
+.category-card-mini .category-icon {
+    font-size: 2rem;
+    background: none;
+    box-shadow: none;
+    color: var(--text-secondary);
 }
 
 .category-card-selectable:hover {
-    box-shadow: var(--shadow-hover);
+    border-color: var(--accent-color);
 }
 
 .category-card-selectable:hover::before {
@@ -198,6 +200,10 @@ footer {
 .folder-header {
     position: relative;
     padding-bottom: 10px;
+}
+
+.folder-header h2 {
+    font-size: 36px;
 }
 
 .category-header {
@@ -259,7 +265,7 @@ footer {
     align-items: center;
     gap: var(--spacing-md);
     padding: 1px 10px;
-    background-color: rgba(42, 50, 70, 0.5);
+    /*background-color: rgba(42, 50, 70, 0.5);*/
     border-radius: var(--border-radius-sm);
     color: var(--text-primary);
     text-decoration: none;
@@ -273,7 +279,6 @@ footer {
 .link-title:hover {
     background-color: var(--accent-light);
     border-color: var(--accent-color);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
 
 .link-icon {
@@ -551,7 +556,7 @@ footer {
     margin: 1.5em 0 0.8em;
     padding-bottom: 0.4em;
     border-bottom: 3px solid var(--accent-color);
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-weight: 800;
 }
 
@@ -559,8 +564,7 @@ footer {
     font-size: 1.6rem;
     margin: 1.3em 0 0.6em;
     padding-bottom: 0.3em;
-    /*border-bottom: 2px solid var(--card-border);*/
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-weight: 700;
 }
 
