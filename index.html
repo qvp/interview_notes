@@ -145,21 +145,19 @@
     </div>
 
     <!-- Contributors -->
-    <div style="margin-top: 30px" v-if="selectedDir == null">
+    <div class="contributors-wrap" v-if="selectedDir == null">
         <div class="sub-header">
             <h1>
                 Contributors
             </h1>
-            <p>Внести свой вклад может каждый</p>
+            <p>Внести свой вклад может <a href="https://github.com/qvp/interview_notes#добавить-свою-заметку" target="_blank">каждый</a></p>
         </div>
-        <div class="contributers">
-            <div class="contributer" v-for="contributor in contributors" :key="contributor.login">
+        <div class="contributors">
+            <a class="contributor" :href="'https://github.com/' + contributor.login" target="_blank"
+               v-for="contributor in contributors" :key="contributor.login">
                 <img :src="contributor.avatar_url">
-                <div class="contributor-titles">
-                    <a :href="'https://github.com/' + contributor.login" target="_blank">{{ contributor.name }}</a>
-                    <span v-if="contributor.name != contributor.login">{{ contributor.login }}</span>
-                </div>
-            </div>
+                <span>{{ contributor.login }}</span>
+            </a>
         </div>
     </div>
 
