@@ -76,7 +76,7 @@
         <main>
             <!-- Если папка не выбрана отображаем список папок -->
             <div class="grid-container" v-if="selectedDir == null">
-                <div class="category-card category-card-selectable" v-for="(category, index) in sortedLinksData"
+                <div class="category-card category-card-selectable" v-for="(category, index) in linksDataSorted"
                      :key="index"
                      @click="chooseDir(category.dir)" title="Открыть папку">
                     <div class="category-header">
