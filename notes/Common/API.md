@@ -1,6 +1,7 @@
 # API
 
 ## HTTP
+<!-- junior 3525480 -->
 **GET** - получить подробную информацию о ресурсе.  
 **POST** - создать новый ресурс.  
 **PUT** - обновить существующий ресурс полностью.  
@@ -12,9 +13,12 @@
 **Не идемпотентные:** POST, PATCH  
 PATCH не идемпотентный так как не перезаписывает объект целиком и в таком случае возможно добавление полей.
 
-## REST vs gRPC ???
+## REST vs gRPC
+<!-- junior 3525480 -->
 https://realpython.com/python-microservices-grpc/#performance
 
-## Websockets ???
+## Websockets
+<!-- junior 3525480 -->
 
-## Sockets ???
+## Sockets
+<!-- junior 3525480 -->

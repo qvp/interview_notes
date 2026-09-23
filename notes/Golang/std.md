@@ -1,6 +1,7 @@
 # Std
 
 ## fmt
+<!-- junior 3525480 -->
 Форматированный ввод/вывод.
 ```go
 fmt.Print("Hello")                        // Вывод без перевода строки  
@@ -17,6 +18,7 @@ fmt.Println(fmt.Scanln(&x))               // Чтение строки до \n
 ```
 
 ## os
+<!-- junior 3525480 -->
 Взаимодействие с ОС (работа с файлами, аргументами командной строки, переменными окружения).
 ```go
 file, _ := os.Open("file.txt")            // Открытие файла для чтения  
@@ -47,6 +49,7 @@ os.Stdout.Write([]byte("Hi"))             // Доступ к stdin/stdout/stderr
 ```
 
 ## io
+<!-- junior 3525480 -->
 Базовые интерфейсы ввода-вывода.
 ```go
 var r io.Reader  // Интерфейс для чтения
@@ -69,6 +72,7 @@ s := io.NewSectionReader(r, 0, 100) // Читает определённый у�
 ```
 
 ## bufio
+<!-- junior 3525480 -->
 Буферизованный ввод-вывод (чтение/запись построчно).
 ```go
 reader := bufio.NewReader(os.Stdin)       // Создает буферизованный Reader
@@ -86,6 +90,7 @@ scanner.Bytes()                               // Возвращает текущ
 ```
 
 ## encoding/json
+<!-- junior 3525480 -->
 Работа с JSON (маршалинг и анмаршалинг).
 ```go
 data, _ := json.Marshal(user)                 // Преобразует структуру в JSON ([]byte)  
@@ -97,6 +102,7 @@ json.NewDecoder(reader).Decode(&user)     // Читает JSON из io.Reader
 ```
 
 ## strconv
+<!-- junior 3525480 -->
 Преобразование строк в числа и обратно.
 ```go
 i, e := strconv.Atoi("42")                 // Строка → int (парсинг целого)  
@@ -116,6 +122,7 @@ r := strconv.QuoteRune('☺')             // Руна → экранирован
 ```
 
 ## strings
+<!-- junior 3525480 -->
 Операции со строками (поиск, замена, разбиение).
 ```go
 strings.Contains("hello", "ell")         // true если подстрока найдена
@@ -149,6 +156,7 @@ builder.WriteString("hello")             // Добавление строки в
 ```
 
 ## bytes
+<!-- junior 3525480 -->
 Работа с байтовыми срезами (аналогично `strings`, но для `[]byte`).
 ```go
 b := bytes.Buffer{}                     // Создает буфер для эффективной работы с []byte
@@ -180,6 +188,7 @@ bytes.Compare([]byte("a"), []byte("b"))  // -1 (сравнение)
 ```
 
 ## time
+<!-- junior 3525480 -->
 Работа с датами, временем и таймерами.
 ```go
 now := time.Now()                                   // Текущее время
@@ -217,6 +226,7 @@ time.Until(t)                          // Оставшееся время до �
 ```
 
 ## reflect
+<!-- junior 3525480 -->
 ```go
 t := reflect.TypeOf(42)                // Возвращает тип значения (reflect.Type)
 v := reflect.ValueOf("hello")          // Возвращает reflect.Value объекта
@@ -246,6 +256,7 @@ m.SetMapIndex(keyVal, valVal)           // Добавление элемента
 ```
 
 ## sort
+<!-- junior 3525480 -->
 Сортировка слайсов и пользовательских коллекций.
 ```go
 sort.Ints([]int{3, 1, 2})             // Сортировка []int → [1 2 3]

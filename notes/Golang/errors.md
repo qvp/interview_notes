@@ -1,6 +1,7 @@
 # Errors
 
 ## Примеры работы с ошибками
+<!-- junior 3525480 -->
 `panic` только для ситуаций, когда программа действительно не может продолжать работу, и эта ситуация является неожиданной и невосстановимой. Во всех остальных случаях возвращайте ошибки.
 
 ```go
@@ -29,6 +30,7 @@ if errors.As(err, &myErr) {
 ```
 
 ## Recover \ panic
+<!-- junior 3525480 -->
 Функция которую можно вызвать, как исключение, и тогда функция recover() вернет ошибку.
 ```go
 func x() (res int, err error) {
@@ -53,6 +55,7 @@ func x() (res int, err error) {
 3. Предотвращения падения сервиса в критически важных местах
 
 ## Middleware восстановления (для веб-серверов):
+<!-- junior 3525480 -->
 ```go
 func recoveryMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -68,6 +71,7 @@ func recoveryMiddleware(next http.Handler) http.Handler {
 ```
 
 ## fmt.Errorf
+<!-- junior 3525480 -->
 Функция fmt.Errorf в Go используется для создания форматированных ошибок. Она работает аналогично fmt.Printf, но вместо вывода текста возвращает ошибку.  
 Начиная с Go 1.13, fmt.Errorf получил специальный глагол %w, который позволяет оборачивать ошибки, сохраняя исходную ошибку для последующего анализа.  
 Без %w (простая форматированная ошибка).  
@@ -94,6 +98,7 @@ func (e *wrapError) Unwrap() error {
 ```
 
 ## Стек вызова функций
+<!-- junior 3525480 -->
 Не логируйте стек для всех ошибок - только для важных или неожиданных.  
 ```go
 log.Printf("Error: %v\nStack trace:\n%s", err, debug.Stack()) // import runtime/debug

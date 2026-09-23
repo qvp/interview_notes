@@ -1,6 +1,7 @@
 # Examples
 
 ## Чтения данных из сети по URL в строку
+<!-- junior 3525480 -->
 ```go
 url := "https://example.com" // Замените на нужный URL
 
@@ -22,6 +23,7 @@ fmt.Println(string(body))
 ```
 
 ## Чтение локального файла построчно
+<!-- junior 3525480 -->
 ```go
 filePath := "test.txt" // Укажите путь к файлу
 
