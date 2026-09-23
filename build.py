@@ -3,6 +3,14 @@
 
 # - Заголовок заметки.
 ## - Раздел внутри заметки.
+
+После каждого ## заголовка должен идти комментарий:
+
+<!-- junior 3283858 3923237 -->
+
+где:
+- первое поле — уровень автора/заметки: junior, middle или senior;
+- остальные поля — числовые ID авторов.
 """
 
 import json
@@ -23,6 +31,34 @@ ICONS = {
     "AI": "fa-solid fa-hexagon-nodes",
 }
 
+VALID_LEVELS = {"junior", "middle", "senior"}
+
+METADATA_PATTERN = re.compile(
+    r"^<!--\s+(junior|middle|senior)(?:\s+(\d+(?:\s+\d+)*))\s+-->$"
+)
+
+
+def parse_metadata(line, file_path):
+    """Парсит уровень и авторов из HTML-комментария."""
+    line = line.strip()
+
+    match = METADATA_PATTERN.match(line)
+
+    if not match:
+        raise ValueError(
+            f"{file_path}: некорректный комментарий метаданных: {line!r}. "
+            f"Ожидается формат: "
+            f"'<!-- junior 123456 -->'"
+        )
+
+    level = match.group(1)
+    authors = [
+        int(author_id)
+        for author_id in match.group(2).split()
+    ]
+
+    return level, authors
+
 
 def parse_markdown(file_path, file_name):
     """Парсит # и ## заголовки из markdown-файла."""
@@ -32,35 +68,68 @@ def parse_markdown(file_path, file_name):
     try:
         with open(file_path, encoding="utf-8") as file:
             in_code_block = False
+            lines = list(file)
 
-            for line in file:
+            i = 0
+
+            while i < len(lines):
+                line = lines[i]
+
                 if "```" in line:
                     in_code_block = not in_code_block
+                    i += 1
                     continue
 
                 if in_code_block:
+                    i += 1
                     continue
 
                 line = line.rstrip()
 
                 match = re.match(r"^(#{1,2})\s+(.+)$", line)
+
                 if not match:
+                    i += 1
                     continue
 
-                level, text = len(match.group(1)), match.group(2).strip()
+                heading_level = len(match.group(1))
+                text = match.group(2).strip()
 
-                if level == 1:
+                if heading_level == 1:
                     title = text
+
                 else:
+                    # Следующая строка после ## должна содержать метаданные.
+                    if i + 1 >= len(lines):
+                        raise ValueError(
+                            f"{file_path}: у заметки "
+                            f"'## {text}' отсутствует комментарий "
+                            f"с уровнем и авторами."
+                        )
+
+                    metadata_line = lines[i + 1]
+                    level, authors = parse_metadata(
+                        metadata_line,
+                        file_path,
+                    )
+
                     sections.append({
                         "file": file_name,
                         "title": text,
                         "uri": f"## {text}",
-                        "child": [],
+                        "level": level,
+                        "authors": authors,
                     })
 
+                    # Пропускаем строку с метаданными.
+                    i += 1
+
+                i += 1
+
     except Exception as e:
-        print(f"Ошибка при чтении файла {file_path}: {e}")
+        raise RuntimeError(
+            f"Ошибка при обработке файла {file_path}: {e}"
+        ) from e
 
     if title is None:
         title = Path(file_name).stem.replace("_", " ").title()
@@ -104,7 +173,11 @@ def generate_links_js(folders):
 
             print(f"  Парсинг файла: {file_name}")
 
-            file_path = os.path.join(folder_path, file_name)
+            file_path = os.path.join(
+                folder_path,
+                file_name,
+            )
+
             folder_data["links"].append(
                 parse_markdown(file_path, file_name)
             )
@@ -112,16 +185,25 @@ def generate_links_js(folders):
         if folder_data["links"]:
             result.append(folder_data)
 
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    os.makedirs(
+        os.path.dirname(output_file),
+        exist_ok=True,
+    )
 
-    # Преобразуем результат в JSON строку с правильным форматированием
-    json_str = json.dumps(result, ensure_ascii=False, indent=2)
+    json_str = json.dumps(
+        result,
+        ensure_ascii=False,
+        indent=2,
+    )
 
-    # Создаем JavaScript содержимое
     js_content = f"const LINKS = {json_str};"
 
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(js_content)
+    with open(
+        output_file,
+        "w",
+        encoding="utf-8",
+    ) as file:
+        file.write(js_content)
 
     print(f"\nФайл {output_file} успешно создан.")
     print(f"Обработано папок: {len(result)}")
