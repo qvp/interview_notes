@@ -67,64 +67,116 @@ def parse_markdown(file_path, file_name):
 
     try:
         with open(file_path, encoding="utf-8") as file:
-            in_code_block = False
             lines = list(file)
 
-            i = 0
+        in_code_block = False
+        i = 0
 
-            while i < len(lines):
-                line = lines[i]
+        while i < len(lines):
+            line = lines[i]
+            stripped_line = line.rstrip()
 
-                if "```" in line:
-                    in_code_block = not in_code_block
-                    i += 1
+            # ---------------------------------------------------------
+            # Блок кода вне заметки
+            # ---------------------------------------------------------
+            if stripped_line.strip().startswith("```"):
+                in_code_block = not in_code_block
+                i += 1
+                continue
+
+            if in_code_block:
+                i += 1
+                continue
+
+            # ---------------------------------------------------------
+            # Заголовок
+            # ---------------------------------------------------------
+            match = re.match(
+                r"^(#{1,2})\s+(.+)$",
+                stripped_line,
+            )
+
+            if not match:
+                i += 1
+                continue
+
+            heading_level = len(match.group(1))
+            text = match.group(2).strip()
+
+            # ---------------------------------------------------------
+            # # Заголовок файла
+            # ---------------------------------------------------------
+            if heading_level == 1:
+                title = text
+                i += 1
+                continue
+
+            # ---------------------------------------------------------
+            # ## Новая заметка
+            # ---------------------------------------------------------
+
+            # Metadata должна быть сразу после ##.
+            if i + 1 >= len(lines):
+                raise ValueError(
+                    f"{file_path}: у заметки "
+                    f"'## {text}' отсутствует комментарий "
+                    f"с уровнем и авторами."
+                )
+
+            metadata_line = lines[i + 1]
+
+            level, authors = parse_metadata(
+                metadata_line,
+                file_path,
+            )
+
+            # Начало содержимого заметки.
+            content_start = i + 2
+
+            # Ищем конец заметки.
+            j = content_start
+            in_section_code_block = False
+
+            while j < len(lines):
+                current_line = lines[j]
+                current_stripped = current_line.rstrip()
+
+                # Переключаем состояние code block.
+                if current_stripped.strip().startswith("```"):
+                    in_section_code_block = not in_section_code_block
+                    j += 1
                     continue
 
-                if in_code_block:
-                    i += 1
-                    continue
-
-                line = line.rstrip()
-
-                match = re.match(r"^(#{1,2})\s+(.+)$", line)
-
-                if not match:
-                    i += 1
-                    continue
-
-                heading_level = len(match.group(1))
-                text = match.group(2).strip()
-
-                if heading_level == 1:
-                    title = text
-
-                else:
-                    # Следующая строка после ## должна содержать метаданные.
-                    if i + 1 >= len(lines):
-                        raise ValueError(
-                            f"{file_path}: у заметки "
-                            f"'## {text}' отсутствует комментарий "
-                            f"с уровнем и авторами."
-                        )
-
-                    metadata_line = lines[i + 1]
-                    level, authors = parse_metadata(
-                        metadata_line,
-                        file_path,
+                # ## внутри code block не является новой заметкой.
+                if not in_section_code_block:
+                    next_heading = re.match(
+                        r"^##\s+(.+)$",
+                        current_stripped,
                     )
 
-                    sections.append({
-                        "file": file_name,
-                        "title": text,
-                        "uri": f"## {text}",
-                        "level": level,
-                        "authors": authors,
-                    })
+                    if next_heading:
+                        break
 
-                    # Пропускаем строку с метаданными.
-                    i += 1
+                j += 1
 
-                i += 1
+            content = lines[content_start:j]
+
+            is_empty = not any(
+                line.strip()
+                for line in content
+            )
+
+            sections.append({
+                "file": file_name,
+                "title": text,
+                "uri": f"## {text}",
+                "level": level,
+                "authors": authors,
+                "is_empty": is_empty,
+            })
+
+            # Переходим сразу к следующему ##.
+            i = j
 
     except Exception as e:
         raise RuntimeError(
@@ -199,9 +251,9 @@ def generate_links_js(folders):
     js_content = f"const LINKS = {json_str};"
 
     with open(
-        output_file,
-        "w",
-        encoding="utf-8",
+            output_file,
+            "w",
+            encoding="utf-8",
     ) as file:
         file.write(js_content)
 
