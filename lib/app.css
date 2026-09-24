@@ -185,6 +185,35 @@ footer {
     color: var(--text-secondary);
 }
 
+.level-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    vertical-align: middle;
+    padding-bottom: 3px;
+}
+
+.level-badge-j {
+    border: 1px solid #22c55e;
+    color: #22c55e;
+}
+
+.level-badge-m {
+    border: 1px solid #f59e0b;
+    color: #f59e0b;
+}
+
+.level-badge-s {
+    border: 1px solid #ef4444;
+    color: #ef4444;
+}
+
 .category-card-selectable:hover {
     border-color: var(--accent-color);
 }
@@ -409,6 +438,20 @@ footer {
     position: absolute;
     top: 15px;
     right: 4px;
+}
+
+.modal-content .note-meta {
+    position: absolute;
+    top: 7px;
+    left: 33px;
+    color: var(--card-border);
+    font-size: 12px;
+}
+
+.note-meta a, .note-meta a:visited {
+    color: var(--card-border) !important;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .modal-content img {
