@@ -57,6 +57,12 @@ body {
     margin: 0 auto;
 }
 
+.seo-block {
+    max-width: 1000px;
+    color: var(--text-muted);
+    margin: 40px auto 0 auto;
+}
+
 /*============== Header ============*/
 .header {
     display: flex;

@@ -50,7 +50,7 @@
 
         <div class="sub-header" v-if="selectedDir == null">
             <h1>
-                Ответы на частые вопросы с собеседований по Python, базам данных,
+                Ответы на частые вопросы с собеседований по Python, Golang, базам данных,
                 <br>
                 очередям и другим темам, связанным с веб-разработкой.
             </h1>
@@ -136,7 +136,8 @@
                     <div class="loading-spinner"></div>
                     <p class="loading-text">Загрузка содержимого...</p>
                 </div>
-                <div v-else-if="markdownContent" class="markdown-content" v-html="renderedMarkdown" ref="modalContentRef"></div>
+                <div v-else-if="markdownContent" class="markdown-content" v-html="renderedMarkdown"
+                     ref="modalContentRef"></div>
                 <div v-else class="error-message">
                     <i class="fas fa-exclamation-circle error-icon"></i>
                     <p>Не удалось загрузить содержимое файла</p>
@@ -151,7 +152,8 @@
             <h1>
                 Contributors
             </h1>
-            <p>Внести свой вклад может <a href="https://github.com/qvp/interview_notes#добавить-свою-заметку" target="_blank">каждый</a></p>
+            <p>Внести свой вклад может <a href="https://github.com/qvp/interview_notes#добавить-свою-заметку"
+                                          target="_blank">каждый</a></p>
         </div>
         <div class="contributors">
             <a class="contributor" :href="'https://github.com/' + contributor.login" target="_blank"
@@ -160,6 +162,20 @@
                 <span>{{ contributor.login }}</span>
             </a>
         </div>
+    </div>
+
+    <!-- SEO -->
+    <div class="seo-block">
+        <h2>Ответы на вопросы с собеседований</h2>
+        <p>
+            На сайте собраны ответы на вопросы, которые чаще всего задают на технических
+            собеседованиях. Материалы охватывают следующие темы:
+            <span v-for="(category, index) in linksDataSorted" :key="index">{{ category.header }}, </span>
+        </p>
+        <p>
+            Каждая тема содержит разбор типовых вопросов, примеры кода и пояснения —
+            всё, что нужно для подготовки к интервью.
+        </p>
     </div>
 
     <footer></footer>
