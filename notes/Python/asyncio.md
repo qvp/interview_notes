@@ -36,7 +36,7 @@ Task - это обертка вокруг корутины, которая пл�
 <!-- middle 3525480 -->
 Корутины, задачи, футуры являются Awaitable, то есть можно ждать их выполнения с помощью await.
 
-![](../images/awaitable_classes.png)
+![](./images/awaitable_classes.png)
 
 ## __ await __
 <!-- middle 3525480 -->

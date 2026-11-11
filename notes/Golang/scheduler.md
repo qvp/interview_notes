@@ -186,4 +186,4 @@ Sysmon установит флаг `stackguard=stackPreempt` если горут
 4. Если не получилось, проверяем GRQ
 5. Проверяем Network Poller
 
-![](../images/scheduler.png)
+![](./images/scheduler.png)
