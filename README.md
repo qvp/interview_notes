@@ -1,7 +1,6 @@
 ![](./screenshot.png)
-<p style="text-align: center">
+<p>
 Ответы на частые вопросы с собеседований по Python, базам данных, очередям и другим темам, связанным с веб-разработкой.
-<br>
 Доступно по ссылке <a href="https://notes.alex.md">https://notes.alex.md</a>
 </p>
 
